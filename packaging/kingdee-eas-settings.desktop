@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=金蝶 EAS Cloud 连接设置
+Comment=Configure the Kingdee EAS server connection
+Exec=kingdee-eas-client --settings
+Icon=/opt/kingdee-eas-client/seed/eas/client/bin/set-url.ico
+Terminal=false
+Categories=Settings;
+StartupNotify=true

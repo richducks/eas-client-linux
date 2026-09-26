@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+releases/
+.env
+.env.*
+!.env.example
+config.yaml
+*.log
+__pycache__/
+.DS_Store
+archive/
+*.deb
+*.tar.gz

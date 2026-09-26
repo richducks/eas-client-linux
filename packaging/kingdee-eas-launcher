@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly PACKAGE_VERSION="8.8.0+fontfix1"
+readonly SEED_ROOT="/opt/kingdee-eas-client/seed"
+readonly STATE_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/kingdee-eas-client"
+readonly APP_ROOT="$STATE_ROOT/eas"
+readonly VERSION_FILE="$STATE_ROOT/.seed-version"
+readonly LOCK_DIR="$STATE_ROOT/.initialize-lock"
+
+initialize_client() {
+  mkdir -p "$STATE_ROOT"
+  local waited=0
+  until mkdir "$LOCK_DIR" 2>/dev/null; do
+    sleep 1
+    waited=$((waited + 1))
+    if (( waited >= 120 )); then
+      echo "金蝶 EAS 客户端初始化超时，请稍后重试。" >&2
+      exit 1
+    fi
+  done
+  trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
+
+  local installed_version=""
+  if [[ -f "$VERSION_FILE" ]]; then
+    installed_version="$(<"$VERSION_FILE")"
+  fi
+
+  if [[ ! -x "$APP_ROOT/clientjdk/bin/java" || ! -f "$APP_ROOT/client/bin/client.sh" ]]; then
+    echo "正在首次初始化金蝶 EAS 客户端，请稍候……" >&2
+    rm -rf "$APP_ROOT"
+    cp -a "$SEED_ROOT/eas" "$APP_ROOT"
+  elif [[ "$installed_version" != "$PACKAGE_VERSION" ]]; then
+    echo "正在更新金蝶 EAS 客户端文件，请稍候……" >&2
+    local env_backup="$STATE_ROOT/.set-client-env.backup"
+    if [[ -f "$APP_ROOT/client/bin/set-client-env.sh" ]]; then
+      cp -p "$APP_ROOT/client/bin/set-client-env.sh" "$env_backup"
+    fi
+    cp -a "$SEED_ROOT/eas/." "$APP_ROOT/"
+    if [[ -f "$env_backup" ]]; then
+      cp -p "$env_backup" "$APP_ROOT/client/bin/set-client-env.sh"
+      rm -f "$env_backup"
+    fi
+  fi
+
+  mkdir -p "$APP_ROOT/client/cache" "$APP_ROOT/client/logs" "$APP_ROOT/client/temporary"
+  printf '%s\n' "$PACKAGE_VERSION" > "$VERSION_FILE"
+  trap - EXIT
+  rmdir "$LOCK_DIR"
+}
+
+initialize_client
+cd "$APP_ROOT/client/bin"
+
+if [[ "${1:-}" == "--settings" ]]; then
+  shift
+  exec sh ./set-url.sh "$@"
+fi
+exec sh ./client.sh "$@"

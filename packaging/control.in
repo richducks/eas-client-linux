@@ -1,0 +1,14 @@
+Package: kingdee-eas-client
+Version: @VERSION@
+Section: office
+Priority: optional
+Architecture: amd64
+Installed-Size: @INSTALLED_SIZE@
+Depends: libc6, libx11-6, libxext6, libxi6, libxrender1, libxtst6, libfreetype6, fontconfig
+Recommends: fonts-noto-cjk
+Maintainer: Local EAS Client Packager
+Homepage: https://www.kingdee.com/
+Description: Kingdee EAS Cloud 8.8 client with local font fixes
+ Bundled Kingdee EAS Cloud 8.8 Linux client and its Oracle Java 8 runtime.
+ The launcher creates a writable per-user runtime copy so online updates, caches
+ and connection settings continue to work without modifying system files.

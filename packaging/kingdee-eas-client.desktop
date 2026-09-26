@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=金蝶 EAS Cloud 客户端
+Comment=Kingdee EAS Cloud 8.8 Client
+Exec=kingdee-eas-client
+Icon=/opt/kingdee-eas-client/seed/eas/client/bin/client.ico
+Terminal=false
+Categories=Office;Finance;
+StartupNotify=true
