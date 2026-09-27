@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly PACKAGE_VERSION="8.8.0+fontfix1"
+readonly PACKAGE_VERSION="8.8.0+fontfix2"
 readonly SEED_ROOT="/opt/kingdee-eas-client/seed"
 readonly STATE_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/kingdee-eas-client"
 readonly APP_ROOT="$STATE_ROOT/eas"

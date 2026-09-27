@@ -4,7 +4,7 @@ set -euo pipefail
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE_ROOT="${SOURCE_ROOT:-}"
 [[ -n "$SOURCE_ROOT" ]] || { echo "请设置 SOURCE_ROOT 为已授权安装的 EAS 客户端目录" >&2; exit 1; }
-VERSION="${VERSION:-8.8.0+fontfix1}"
+VERSION="${VERSION:-8.8.0+fontfix2}"
 ARCH="amd64"
 BUILD_ROOT="$BASE_DIR/build/kingdee-eas-client_${VERSION}_${ARCH}"
 APP_ROOT="$BUILD_ROOT/opt/kingdee-eas-client"
@@ -21,6 +21,7 @@ mkdir -p \
   "$APP_ROOT/seed/eas" \
   "$BUILD_ROOT/usr/bin" \
   "$BUILD_ROOT/usr/share/applications" \
+  "$BUILD_ROOT/usr/share/icons/hicolor/32x32/apps" \
   "$BUILD_ROOT/usr/share/doc/kingdee-eas-client" \
   "$(dirname "$PACKAGE_OUT")"
 
@@ -50,6 +51,8 @@ install -m 0644 "$BASE_DIR/packaging/kingdee-eas-client.desktop" \
   "$BUILD_ROOT/usr/share/applications/kingdee-eas-client.desktop"
 install -m 0644 "$BASE_DIR/packaging/kingdee-eas-settings.desktop" \
   "$BUILD_ROOT/usr/share/applications/kingdee-eas-settings.desktop"
+install -m 0644 "$BASE_DIR/packaging/kingdee-eas-client.png" \
+  "$BUILD_ROOT/usr/share/icons/hicolor/32x32/apps/kingdee-eas-client.png"
 install -m 0644 "$BASE_DIR/packaging/README.txt" \
   "$BUILD_ROOT/usr/share/doc/kingdee-eas-client/README.txt"
 
